@@ -1,0 +1,585 @@
+---
+swagger: '2.0'
+info:
+  title: API ONG V1
+  version: v1
+  description: Esta es la documentacion con swagger para la ong
+securityDefinitions:
+  Bearer:
+    description: 'introducir "Bearer + token . Example: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNH0.LANmhpfIFYUSWBW61lFOZtBZZKoUs7dlXVjzdo-PdrQ'
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  "/auth/register":
+    post:
+      summary: Register a new User
+      tags:
+      - Auth
+      consumes:
+      - application/json
+      parameters:
+      - name: user
+        in: body
+        schema:
+          type: object
+          properties:
+            firstName:
+              type: string
+            lastName:
+              type: string
+            email:
+              type: string
+            password:
+              type: string
+            photo:
+              type: string
+            role_id:
+              type: number
+          required:
+          - firstName
+          - lastName
+          - email
+          - password
+          - role_id
+      responses:
+        '201':
+          description: user created
+        '422':
+          description: invalid request
+  "/auth/login":
+    post:
+      summary: Login a User
+      tags:
+      - Auth
+      produces:
+      - application/json
+      parameters:
+      - name: user
+        in: body
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+          required:
+          - email
+          - password
+      responses:
+        '200':
+          description: logged in
+        '404':
+          description: user not found
+  "/categories":
+    get:
+      summary: List categories
+      tags:
+      - Categories
+      consumes:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: Creates a category
+      tags:
+      - Categories
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      - name: category
+        in: body
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            description:
+              type: string
+          required:
+          - name
+      responses:
+        '200':
+          description: category created
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Categoria 1
+                description: esta es la categoria 1
+        '400':
+          description: bad request
+          content:
+            application/json:
+              example:
+                message: Su categoria no pudo crearse
+  "/categories/{id}":
+    parameters:
+    - name: id
+      in: path
+      type: string
+      description: id
+      required: true
+    get:
+      summary: show category
+      tags:
+      - Categories
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: category not found
+    put:
+      summary: update category
+      tags:
+      - Categories
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      - name: category
+        in: body
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+          required:
+          - name
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: category not found
+    delete:
+      summary: delete category
+      tags:
+      - Categories
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: category not found
+  "/members":
+    get:
+      summary: List Members
+      tags:
+      - Members
+      consumes:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: Creates a member
+      tags:
+      - Members
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      - name: member
+        in: body
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            description:
+              type: string
+            facebookUrl:
+              type: string
+            instagramUrl:
+              type: string
+            linkedinUrl:
+              type: string
+          required:
+          - name
+      responses:
+        '200':
+          description: member created
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Test member
+                description: Description test
+                facebookUrl: facebookUrl.com/member
+        '400':
+          description: bad request
+          content:
+            application/json:
+              example:
+                message: Su categoria no pudo crearse
+  "/members/{id}":
+    parameters:
+    - name: id
+      in: path
+      type: string
+      description: id
+      required: true
+    put:
+      summary: Update a member
+      tags:
+      - Members
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      - name: member
+        in: body
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            description:
+              type: string
+            facebookUrl:
+              type: string
+            instagramUrl:
+              type: string
+            linkedinUrl:
+              type: string
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: category not found
+    delete:
+      summary: Delete a member
+      tags:
+      - Members
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: Member not found
+  "/news":
+    get:
+      summary: List news
+      tags:
+      - News
+      consumes:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: Creates a new
+      tags:
+      - News
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      - name: new
+        in: body
+        schema:
+          type: object
+          properties:
+            new:
+              type: object
+              properties:
+                name:
+                  type: string
+                content:
+                  type: string
+                category_id:
+                  type: integer
+                image:
+                  type: string
+          required:
+          - name
+          - content
+          - category_id
+          - image
+      responses:
+        '200':
+          description: category created
+        '400':
+          description: bad request
+          content:
+            application/json:
+              example:
+                message: Su novedad no pudo crearse
+  "/news/{id}":
+    parameters:
+    - name: id
+      in: path
+      type: string
+      description: id
+      required: true
+    get:
+      summary: show new
+      tags:
+      - News
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: new not found
+    put:
+      summary: update new
+      tags:
+      - News
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      - name: new
+        in: body
+        schema:
+          type: object
+          properties:
+            new:
+              type: object
+              properties:
+                name:
+                  type: string
+                content:
+                  type: string
+                category_id:
+                  type: integer
+                image:
+                  type: string
+          required:
+          - name
+          - content
+          - category_id
+          - image
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: new not found
+    delete:
+      summary: delete new
+      tags:
+      - News
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: new not found
+  "/testimonials":
+    get:
+      summary: List Testimonial
+      tags:
+      - Testimonials
+      consumes:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: Creates a testimonial
+      tags:
+      - Testimonials
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      - name: testimonial
+        in: body
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            content:
+              type: string
+      responses:
+        '200':
+          description: testimonial created
+        '422':
+          description: Unprocessable Entity
+        '400':
+          description: bad request
+  "/testimonials/{id}":
+    put:
+      summary: Update testimonial
+      tags:
+      - Testimonials
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: testimonial
+        in: body
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            content:
+              type: string
+      responses:
+        '200':
+          description: testimonial updated
+        '404':
+          description: category not found
+    delete:
+      summary: Delete testimonial
+      tags:
+      - Testimonials
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      - name: id
+        in: path
+        type: string
+        required: true
+      responses:
+        '200':
+          description: testimonial deleted
+        '404':
+          description: testimonial not found
+definitions:
+  Category:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: '1'
+      name:
+        type: string
+        example: categoria 1
+      description:
+        type: string
+        example: esta es la categoria 1
+      is_deleted:
+        type: boolean
+        example: 'false'
+  Testimonial:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: '1'
+      name:
+        type: string
+        example: testimonial 1
+      content:
+        type: string
+        example: testimonial content
+      is_deleted:
+        type: boolean
+        example: 'false'
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000

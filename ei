@@ -1,0 +1,20 @@
+= AAccttiivveeSSttoorraaggee::::AAttttaacchheedd  <<  OObbjjeecctt
+
+(from gem activestorage-6.1.4)
+------------------------------------------------------------------------
+Abstract base class for the concrete ActiveStorage::Attached::One and
+ActiveStorage::Attached::Many classes that both provide proxy access to
+the blob association for a record.
+------------------------------------------------------------------------
+= CCllaassss  mmeetthhooddss::
+
+  new
+
+= IInnssttaannccee  mmeetthhooddss::
+
+  change, name, record
+
+= AAttttrriibbuutteess::
+
+  attr_reader name, attr_reader record
+
